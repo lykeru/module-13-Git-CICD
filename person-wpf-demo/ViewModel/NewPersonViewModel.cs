@@ -60,6 +60,7 @@ namespace person_wpf_demo.ViewModel
         {
             Person person = new Person() { Prenom = Prenom, Nom = Nom };
             _personDAL.Save(person);
+            _navigationService.NavigateTo<PersonsViewModel>();
         }
         private bool CanSave()
         {
