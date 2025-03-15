@@ -1,34 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using person_wpf_demo.Model.Interfaces;
 
 namespace person_wpf_demo.Model.DAL
 {
     public class PersonDAL : IPersonDAL
     {
-        private readonly List<Person> _persons;
-        public PersonDAL()
+        private readonly ApplicationDbContext _context;
+
+        public PersonDAL(ApplicationDbContext context)
         {
-            _persons = [];
+            _context = context;
         }
 
         public IList<Person> GetAll()
         {
-            return _persons;
+            return _context.Persons.Include(p => p.Addresses).ToList();
         }
 
         public void Save(Person person)
         {
-            _persons.Add(person);
+            _context.Persons.Add(person);
+            _context.SaveChanges();
+        }
+
+        public void Update(Person person)
+        {
+            var existingPerson = _context.Persons.Include(p => p.Addresses).FirstOrDefault(p => p.Id == person.Id);
+            if (existingPerson != null)
+            {
+                existingPerson.Prenom = person.Prenom;
+                existingPerson.Nom = person.Nom;
+
+                foreach (var address in person.Addresses)
+                {
+                    var existingAddress = existingPerson.Addresses.FirstOrDefault(a => a.Id == address.Id);
+                    if (existingAddress != null)
+                    {
+                        existingAddress.Street = address.Street;
+                        existingAddress.City = address.City;
+                        existingAddress.PostalCode = address.PostalCode;
+                    }
+                    else
+                    {
+                        existingPerson.Addresses.Add(address);
+                    }
+                }
+
+                foreach (var address in existingPerson.Addresses.ToList())
+                {
+                    if (!person.Addresses.Any(a => a.Id == address.Id))
+                    {
+                        _context.Addresses.Remove(address);
+                    }
+                }
+
+                _context.Persons.Update(existingPerson);
+                _context.SaveChanges();
+            }
         }
 
         public void Delete(Person person)
         {
-            _persons.Remove(person);
+            _context.Persons.Remove(person);
+            _context.SaveChanges();
         }
     }
 }

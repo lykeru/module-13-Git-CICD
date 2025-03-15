@@ -15,7 +15,7 @@ namespace person_wpf_demo
     /// </summary>
     public partial class App : Application
     {
-        private readonly ServiceProvider _serviceProdiver;
+        private readonly ServiceProvider _serviceProvider;
         public App()
         {
             IServiceCollection services = new ServiceCollection();
@@ -40,12 +40,23 @@ namespace person_wpf_demo
                 return ViewModelFactory;
             });
 
-            _serviceProdiver = services.BuildServiceProvider();
+            services.AddDbContext<ApplicationDbContext>();
+
+            _serviceProvider = services.BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var mainWindow = _serviceProdiver.GetRequiredService<MainWindow>();
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                if (dbContext.Database.EnsureCreated())
+                {
+                    dbContext.SeedData();
+                }
+            }
+
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
             base.OnStartup(e);
         }

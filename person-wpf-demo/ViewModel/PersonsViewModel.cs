@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using person_wpf_demo.Model;
 using person_wpf_demo.Model.Interfaces;
@@ -17,10 +15,10 @@ namespace person_wpf_demo.ViewModel
     {
         private readonly IPersonDAL _personDAL;
         private readonly INavigationService _navigationService;
-        public ObservableCollection<Person> Persons 
+        public ObservableCollection<Person> Persons
         {
             get => new ObservableCollection<Person>(_personDAL.GetAll());
-            set; 
+            set;
         }
 
         private Person _selectedPerson;
@@ -31,26 +29,21 @@ namespace person_wpf_demo.ViewModel
             {
                 _selectedPerson = value;
                 OnPropertyChanged(nameof(SelectedPerson));
+                OnPropertyChanged(nameof(AddressCount));
             }
         }
 
-        private int _selectedPersonIndex;
-        public int SelectedPersonIndex
-        {
-            get { return _selectedPersonIndex; }
-            set
-            {
-                _selectedPersonIndex = value;
-            }
-        }
+        public int AddressCount => SelectedPerson?.Addresses?.Count ?? 0;
 
         public ICommand DeleteCommand { get; set; }
+        public ICommand AddAddressCommand { get; set; }
 
         public PersonsViewModel(IPersonDAL personDAL, INavigationService navigationService)
         {
             _personDAL = personDAL;
             _navigationService = navigationService;
             DeleteCommand = new RelayCommand(Delete, CanDelete);
+            AddAddressCommand = new RelayCommand(AddAddress, CanAddAddress);
         }
 
         private void Delete()
@@ -60,6 +53,28 @@ namespace person_wpf_demo.ViewModel
         }
 
         private bool CanDelete()
+        {
+            return SelectedPerson != null;
+        }
+
+        private void AddAddress()
+        {
+            if (SelectedPerson != null)
+            {
+                var newAddress = new Address
+                {
+                    Street = "Nouvelle Rue",
+                    City = "Nouvelle Ville",
+                    PostalCode = "00000",
+                    PersonId = SelectedPerson.Id
+                };
+                SelectedPerson.Addresses.Add(newAddress);
+                _personDAL.Update(SelectedPerson);
+                OnPropertyChanged(nameof(AddressCount));
+            }
+        }
+
+        private bool CanAddAddress()
         {
             return SelectedPerson != null;
         }
