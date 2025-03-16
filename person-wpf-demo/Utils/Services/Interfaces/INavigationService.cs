@@ -10,5 +10,6 @@ namespace person_wpf_demo.Utils.Services.Interfaces
     {
         BaseViewModel CurrentView { get; }
         void NavigateTo<T>() where T : BaseViewModel;
+        void NavigateTo<T>(object[] parameters) where T : BaseViewModel;
     }
 }

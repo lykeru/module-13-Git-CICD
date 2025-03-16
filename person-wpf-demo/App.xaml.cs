@@ -1,21 +1,19 @@
-﻿using System.Windows;
-using person_wpf_demo.Utils;
-using person_wpf_demo.ViewModel;
-using Microsoft.Extensions.DependencyInjection;
-using person_wpf_demo.Model.Interfaces;
-using person_wpf_demo.Model.DAL;
-using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 using person_wpf_demo.Utils.Services.Interfaces;
 using person_wpf_demo.Utils.Services;
+using person_wpf_demo.ViewModel;
+using person_wpf_demo.Model.Interfaces;
+using person_wpf_demo.Model.DAL;
+using person_wpf_demo.Model;
+using person_wpf_demo.Utils;
 
 namespace person_wpf_demo
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private readonly ServiceProvider _serviceProvider;
+
         public App()
         {
             IServiceCollection services = new ServiceCollection();
@@ -28,13 +26,21 @@ namespace person_wpf_demo
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<PersonsViewModel>();
             services.AddSingleton<NewPersonViewModel>();
+            services.AddSingleton<NewAddressViewModel>();
 
             services.AddSingleton<IPersonDAL, PersonDAL>();
             services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton<Func<Type, BaseViewModel>>(serviceProvider =>
+            services.AddSingleton<Func<Type, object[], BaseViewModel>>(serviceProvider =>
             {
-                BaseViewModel ViewModelFactory(Type viewModelType)
+                BaseViewModel ViewModelFactory(Type viewModelType, object[] parameters)
                 {
+                    if (viewModelType == typeof(NewAddressViewModel))
+                    {
+                        return new NewAddressViewModel(
+                            serviceProvider.GetRequiredService<IPersonDAL>(),
+                            serviceProvider.GetRequiredService<INavigationService>(),
+                            (Person)parameters[0]);
+                    }
                     return (BaseViewModel)serviceProvider.GetRequiredService(viewModelType);
                 }
                 return ViewModelFactory;
@@ -61,5 +67,4 @@ namespace person_wpf_demo
             base.OnStartup(e);
         }
     }
-
 }

@@ -36,14 +36,14 @@ namespace person_wpf_demo.ViewModel
         public int AddressCount => SelectedPerson?.Addresses?.Count ?? 0;
 
         public ICommand DeleteCommand { get; set; }
-        public ICommand AddAddressCommand { get; set; }
+        public ICommand NavigateToNewAddressViewCommand { get; set; }
 
         public PersonsViewModel(IPersonDAL personDAL, INavigationService navigationService)
         {
             _personDAL = personDAL;
             _navigationService = navigationService;
             DeleteCommand = new RelayCommand(Delete, CanDelete);
-            AddAddressCommand = new RelayCommand(AddAddress, CanAddAddress);
+            NavigateToNewAddressViewCommand = new RelayCommand(NavigateToNewAddressView, CanNavigateToNewAddressView);
         }
 
         private void Delete()
@@ -57,24 +57,15 @@ namespace person_wpf_demo.ViewModel
             return SelectedPerson != null;
         }
 
-        private void AddAddress()
+        private void NavigateToNewAddressView()
         {
             if (SelectedPerson != null)
             {
-                var newAddress = new Address
-                {
-                    Street = "Nouvelle Rue",
-                    City = "Nouvelle Ville",
-                    PostalCode = "00000",
-                    PersonId = SelectedPerson.Id
-                };
-                SelectedPerson.Addresses.Add(newAddress);
-                _personDAL.Update(SelectedPerson);
-                OnPropertyChanged(nameof(AddressCount));
+                _navigationService.NavigateTo<NewAddressViewModel>(new object[] { _selectedPerson });
             }
         }
 
-        private bool CanAddAddress()
+        private bool CanNavigateToNewAddressView()
         {
             return SelectedPerson != null;
         }
