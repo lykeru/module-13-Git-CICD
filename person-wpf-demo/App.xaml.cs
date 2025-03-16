@@ -7,8 +7,6 @@ using person_wpf_demo.Model.Interfaces;
 using person_wpf_demo.Model.DAL;
 using person_wpf_demo.Model;
 using person_wpf_demo.Utils;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
 
 namespace person_wpf_demo
 {
@@ -48,17 +46,7 @@ namespace person_wpf_demo
                 return ViewModelFactory;
             });
 
-            // Configuration de la chaîne de connexion SQLite
-            var dbPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "DemoMVVM",
-                "DemoMVVM.db");
-            Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
-            var connectionString = $"Data Source={dbPath}";
-
-            // Enregistrement du DbContext dans le conteneur DI avec la configuration SQLite
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(connectionString));
+            services.AddDbContext<ApplicationDbContext>();
 
             _serviceProvider = services.BuildServiceProvider();
         }
