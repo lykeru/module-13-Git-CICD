@@ -4,19 +4,18 @@ using System.IO;
 
 public class ApplicationDbContext : DbContext
 {
-    protected override void OnConfiguring(
-       DbContextOptionsBuilder optionsBuilder)
+    // Injection des options via le constructeur.
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
     {
-        var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DemoMVVM", "DemoMVVM.db");
-        Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
-        var connectionString = $"Data Source={dbPath}";
-
-        optionsBuilder.UseSqlite(connectionString);
     }
 
+    // Définition des DbSet pour vos entités.
     public DbSet<Person> Persons { get; set; }
     public DbSet<Address> Addresses { get; set; }
 
+
+    //Injection des données de développement.
     public void SeedData()
     {
         if (!Persons.Any())
