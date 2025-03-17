@@ -1,5 +1,5 @@
-﻿using person_wpf_demo.Model;
-using person_wpf_demo.Model.Interfaces;
+﻿using person_wpf_demo.Data.Repositories.Interfaces;
+using person_wpf_demo.Model;
 using person_wpf_demo.Utils;
 using person_wpf_demo.Utils.Commands;
 using person_wpf_demo.Utils.Services.Interfaces;
@@ -9,14 +9,14 @@ namespace person_wpf_demo.ViewModel
 {
     class NewAddressViewModel : BaseViewModel, INavigationParameterReceiver
     {
-        private readonly IPersonDAL _personDAL;
         private readonly INavigationService _navigationService;
+        private readonly IAddressService _addressService;
         private Person _selectedPerson;
 
-        public NewAddressViewModel(IPersonDAL personDAL, INavigationService navigationService)
+        public NewAddressViewModel(INavigationService navigationService, IAddressService addressService)
         {
-            _personDAL = personDAL;
             _navigationService = navigationService;
+            _addressService = addressService;
             SaveCommand = new RelayCommand(Save, CanSave);
         }
 
@@ -84,8 +84,7 @@ namespace person_wpf_demo.ViewModel
                 PersonId = _selectedPerson.Id
             };
 
-            _selectedPerson.Addresses.Add(newAddress);
-            _personDAL.Update(_selectedPerson);
+            _addressService.Add(_selectedPerson, newAddress);
             _navigationService.NavigateTo<PersonsViewModel>();
         }
 

@@ -3,10 +3,10 @@ using System.Windows;
 using person_wpf_demo.Utils.Services.Interfaces;
 using person_wpf_demo.Utils.Services;
 using person_wpf_demo.ViewModel;
-using person_wpf_demo.Model.Interfaces;
-using person_wpf_demo.Model.DAL;
 using person_wpf_demo.Model;
 using person_wpf_demo.Utils;
+using person_wpf_demo.Data.Repositories;
+using person_wpf_demo.Data.Repositories.Interfaces;
 
 namespace person_wpf_demo
 {
@@ -28,7 +28,9 @@ namespace person_wpf_demo
             services.AddSingleton<NewPersonViewModel>();
             services.AddSingleton<NewAddressViewModel>();
 
-            services.AddSingleton<IPersonDAL, PersonDAL>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<IPersonService, PersonService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<Func<Type, BaseViewModel>>(serviceProvider =>
             {

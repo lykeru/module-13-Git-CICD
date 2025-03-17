@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using person_wpf_demo.Model;
-using person_wpf_demo.Model.DAL;
-using person_wpf_demo.Model.Interfaces;
 using person_wpf_demo.Utils;
 using person_wpf_demo.Utils.Commands;
 using person_wpf_demo.Utils.Services.Interfaces;
@@ -15,7 +8,7 @@ namespace person_wpf_demo.ViewModel
 {
     class NewPersonViewModel : BaseViewModel
     {
-        private readonly IPersonDAL _personDAL;
+        private readonly IPersonService _personService;
         private readonly INavigationService _navigationService;
 
         private string _prenom;
@@ -93,9 +86,9 @@ namespace person_wpf_demo.ViewModel
             }
         }
 
-        public NewPersonViewModel(IPersonDAL personDAL, INavigationService navigationService)
+        public NewPersonViewModel(IPersonService personService, INavigationService navigationService)
         {
-            _personDAL = personDAL;
+            _personService = personService;
             _navigationService = navigationService;
             SaveCommand = new RelayCommand(Save, CanSave);
         }
@@ -117,7 +110,7 @@ namespace person_wpf_demo.ViewModel
                     }
                 }
             };
-            _personDAL.Save(person);
+            _personService.Add(person);
             _navigationService.NavigateTo<PersonsViewModel>();
         }
         private bool CanSave()

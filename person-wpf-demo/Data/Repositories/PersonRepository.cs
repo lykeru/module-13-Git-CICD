@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using person_wpf_demo.Model.Interfaces;
+using person_wpf_demo.Data.Repositories.Interfaces;
+using person_wpf_demo.Model;
 
-namespace person_wpf_demo.Model.DAL
+namespace person_wpf_demo.Data.Repositories
 {
-    public class PersonDAL : IPersonDAL
+    public class PersonRepository : IPersonRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public PersonDAL(ApplicationDbContext context)
+        public PersonRepository(ApplicationDbContext context)
         {
             _context = context;
         }
