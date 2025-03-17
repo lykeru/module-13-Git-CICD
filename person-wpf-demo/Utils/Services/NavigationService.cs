@@ -11,7 +11,7 @@ namespace person_wpf_demo.Utils.Services
     public class NavigationService : BaseViewModel, INavigationService
     {
         private BaseViewModel _currentView;
-        private Func<Type, object[], BaseViewModel> _viewModelFactory;
+        private Func<Type, BaseViewModel> _viewModelFactory;
 
         public BaseViewModel CurrentView
         {
@@ -23,14 +23,14 @@ namespace person_wpf_demo.Utils.Services
             }
         }
 
-        public NavigationService(Func<Type, object[], BaseViewModel> viewModelFactory)
+        public NavigationService(Func<Type, BaseViewModel> viewModelFactory)
         {
             _viewModelFactory = viewModelFactory;
         }
 
         public void NavigateTo<TViewModel>(params object[] parameters) where TViewModel : BaseViewModel
         {
-            BaseViewModel viewModel = _viewModelFactory.Invoke(typeof(TViewModel), parameters);
+            BaseViewModel viewModel = _viewModelFactory.Invoke(typeof(TViewModel));
             if (viewModel is INavigationParameterReceiver receiver)
             {
                 receiver.Initialize(parameters);

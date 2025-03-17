@@ -30,9 +30,9 @@ namespace person_wpf_demo
 
             services.AddSingleton<IPersonDAL, PersonDAL>();
             services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton<Func<Type, object[], BaseViewModel>>(serviceProvider =>
+            services.AddSingleton<Func<Type, BaseViewModel>>(serviceProvider =>
             {
-                BaseViewModel ViewModelFactory(Type viewModelType, object[] parameters)
+                BaseViewModel ViewModelFactory(Type viewModelType)
                 {
                     return (BaseViewModel)serviceProvider.GetRequiredService(viewModelType);
                 }
