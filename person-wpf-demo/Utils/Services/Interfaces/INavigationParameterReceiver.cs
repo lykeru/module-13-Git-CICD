@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace person_wpf_demo.Utils.Services.Interfaces
 {
-    public interface INavigationService
+    public interface INavigationParameterReceiver
     {
-        BaseViewModel CurrentView { get; }
-        void NavigateTo<T>(params object[] parameters) where T : BaseViewModel;
+        void Initialize(params object[] parameters);
     }
 }

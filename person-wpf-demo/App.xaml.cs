@@ -34,13 +34,6 @@ namespace person_wpf_demo
             {
                 BaseViewModel ViewModelFactory(Type viewModelType, object[] parameters)
                 {
-                    if (viewModelType == typeof(NewAddressViewModel))
-                    {
-                        return new NewAddressViewModel(
-                            serviceProvider.GetRequiredService<IPersonDAL>(),
-                            serviceProvider.GetRequiredService<INavigationService>(),
-                            (Person)parameters[0]);
-                    }
                     return (BaseViewModel)serviceProvider.GetRequiredService(viewModelType);
                 }
                 return ViewModelFactory;

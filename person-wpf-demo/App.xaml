@@ -11,5 +11,8 @@
         <DataTemplate DataType="{x:Type TypeName=viewModel:NewPersonViewModel}">
             <view:NewPersonView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type TypeName=viewModel:NewAddressViewModel}">
+            <view:NewAddressView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

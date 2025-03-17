@@ -59,9 +59,9 @@ namespace person_wpf_demo.ViewModel
 
         private void NavigateToNewAddressView()
         {
-            if (SelectedPerson != null)
+            if (CanNavigateToNewAddressView())
             {
-                _navigationService.NavigateTo<NewAddressViewModel>(new object[] { _selectedPerson });
+                _navigationService.NavigateTo<NewAddressViewModel>(SelectedPerson);
             }
         }
 

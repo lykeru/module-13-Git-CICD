@@ -28,15 +28,13 @@ namespace person_wpf_demo.Utils.Services
             _viewModelFactory = viewModelFactory;
         }
 
-        public void NavigateTo<TViewModel>() where TViewModel : BaseViewModel
-        {
-            BaseViewModel viewModel = _viewModelFactory.Invoke(typeof(TViewModel), null);
-            CurrentView = viewModel;
-        }
-
-        public void NavigateTo<TViewModel>(object[] parameters) where TViewModel : BaseViewModel
+        public void NavigateTo<TViewModel>(params object[] parameters) where TViewModel : BaseViewModel
         {
             BaseViewModel viewModel = _viewModelFactory.Invoke(typeof(TViewModel), parameters);
+            if (viewModel is INavigationParameterReceiver receiver)
+            {
+                receiver.Initialize(parameters);
+            }
             CurrentView = viewModel;
         }
     }

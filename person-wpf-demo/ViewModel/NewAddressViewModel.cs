@@ -7,18 +7,25 @@ using System.Windows.Input;
 
 namespace person_wpf_demo.ViewModel
 {
-    class NewAddressViewModel : BaseViewModel
+    class NewAddressViewModel : BaseViewModel, INavigationParameterReceiver
     {
         private readonly IPersonDAL _personDAL;
         private readonly INavigationService _navigationService;
-        private readonly Person _selectedPerson;
+        private Person _selectedPerson;
 
-        public NewAddressViewModel(IPersonDAL personDAL, INavigationService navigationService, Person selectedPerson)
+        public NewAddressViewModel(IPersonDAL personDAL, INavigationService navigationService)
         {
             _personDAL = personDAL;
             _navigationService = navigationService;
-            _selectedPerson = selectedPerson;
             SaveCommand = new RelayCommand(Save, CanSave);
+        }
+
+        public void Initialize(params object[] parameters)
+        {
+            if (parameters?.Length > 0)
+            {
+                _selectedPerson = parameters[0] as Person;
+            }
         }
 
         private string _street;
@@ -96,5 +103,6 @@ namespace person_wpf_demo.ViewModel
             }
             OnPropertyChanged(nameof(ErrorMessages));
         }
+
     }
 }
