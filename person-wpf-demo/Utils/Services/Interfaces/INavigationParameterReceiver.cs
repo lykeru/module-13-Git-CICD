@@ -8,6 +8,6 @@ namespace person_wpf_demo.Utils.Services.Interfaces
 {
     public interface INavigationParameterReceiver
     {
-        void Initialize(params object[] parameters);
+        void ApplyNavigationParameters(params object[] parameters);
     }
 }

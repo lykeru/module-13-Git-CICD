@@ -20,7 +20,7 @@ namespace person_wpf_demo.ViewModel
             SaveCommand = new RelayCommand(Save, CanSave);
         }
 
-        public void Initialize(params object[] parameters)
+        public void ApplyNavigationParameters(params object[] parameters)
         {
             if (parameters?.Length > 0)
             {

@@ -33,7 +33,7 @@ namespace person_wpf_demo.Utils.Services
             BaseViewModel viewModel = _viewModelFactory.Invoke(typeof(TViewModel));
             if (viewModel is INavigationParameterReceiver receiver)
             {
-                receiver.Initialize(parameters);
+                receiver.ApplyNavigationParameters(parameters);
             }
             CurrentView = viewModel;
         }
