@@ -5,19 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:person_wpf_demo.View"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel>
             <Label Width="200">Prenom</Label>
-            <TextBox Text="{Binding Prenom, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 20"/>
+            <TextBox Text="{Binding Prenom, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
             <Label Width="200">Nom</Label>
-            <TextBox Text="{Binding Nom, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 20"/>
+            <TextBox Text="{Binding Nom, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
+            <Label Width="200">Date de Naissance</Label>
+            <!-- Ajout du label pour la date de naissance -->
+            <DatePicker SelectedDate="{Binding DateDeNaissance, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
+            <!-- Ajout du DatePicker pour la date de naissance -->
             <Label Width="200">Rue</Label>
-            <TextBox Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 20"/>
+            <TextBox Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
             <Label Width="200">Ville</Label>
-            <TextBox Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 20"/>
+            <TextBox Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
             <Label Width="200">Code Postal</Label>
-            <TextBox Text="{Binding PostalCode, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 20"/>
+            <TextBox Text="{Binding PostalCode, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
             <TextBlock Text="{Binding ErrorMessages, UpdateSourceTrigger=PropertyChanged}" Foreground="Red" HorizontalAlignment="Center" Margin="10"/>
             <Button Content="Enregistrer" Command="{Binding SaveCommand}" Width="200"/>
         </StackPanel>
