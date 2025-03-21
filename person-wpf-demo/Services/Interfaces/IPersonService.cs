@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using person_wpf_demo.Model;
 
-namespace person_wpf_demo.Utils.Services.Interfaces
+namespace person_wpf_demo.Services.Interfaces
 {
     public interface IPersonService
     {

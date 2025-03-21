@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using person_wpf_demo.Utils.Services.Interfaces;
+using person_wpf_demo.Services.Interfaces;
+using person_wpf_demo.Utils;
 using person_wpf_demo.ViewModel;
 
-namespace person_wpf_demo.Utils.Services
+namespace person_wpf_demo.Services
 {
     public class NavigationService : BaseViewModel, INavigationService
     {
