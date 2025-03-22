@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
-using person_wpf_demo.ViewModel;
-using person_wpf_demo.Model;
+using person_wpf_demo.ViewModels;
+using person_wpf_demo.Models;
 using person_wpf_demo.Utils;
 using person_wpf_demo.Data.Repositories;
 using person_wpf_demo.Data.Repositories.Interfaces;

@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using person_wpf_demo.ViewModel;
+using person_wpf_demo.ViewModels;
 
 namespace person_wpf_demo
 {

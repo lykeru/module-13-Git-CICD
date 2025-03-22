@@ -10,11 +10,11 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <Label Width="200">Prenom</Label>
-                <TextBox Text="{Binding Prenom, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
+                <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
                 <Label Width="200">Nom</Label>
-                <TextBox Text="{Binding Nom, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
+                <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
                 <Label Width="200">Date de Naissance</Label>
-                <DatePicker SelectedDate="{Binding DateDeNaissance, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
+                <DatePicker SelectedDate="{Binding DateOfBirth, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
                 <Label Width="200">Rue</Label>
                 <TextBox Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0 0 0 15"/>
                 <Label Width="200">Ville</Label>

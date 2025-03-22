@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using person_wpf_demo.Data.Repositories.Interfaces;
-using person_wpf_demo.Model;
+using person_wpf_demo.Models;
 using person_wpf_demo.Services.Interfaces;
 using person_wpf_demo.Utils;
 using person_wpf_demo.Utils.Commands;
 
-namespace person_wpf_demo.ViewModel
+namespace person_wpf_demo.ViewModels
 {
     class PersonsViewModel : BaseViewModel
     {

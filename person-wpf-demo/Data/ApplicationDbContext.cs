@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using person_wpf_demo.Model;
+using person_wpf_demo.Models;
 using System;
 using System.IO;
 using System.Linq;
@@ -7,14 +7,20 @@ using System.Collections.Generic;
 
 public class ApplicationDbContext : DbContext
 {
-    protected override void OnConfiguring(
-       DbContextOptionsBuilder optionsBuilder)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DemoMVVM", "DemoMVVM.db");
-        Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
-        var connectionString = $"Data Source={dbPath}";
+    }
 
-        optionsBuilder.UseSqlite(connectionString);
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DemoMVVM", "DemoMVVM.db");
+            Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
+            var connectionString = $"Data Source={dbPath}";
+
+            optionsBuilder.UseSqlite(connectionString);
+        }
     }
 
     public DbSet<Person> Persons { get; set; }

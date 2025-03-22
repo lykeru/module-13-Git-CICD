@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Moq;
 using person_wpf_demo.Data.Repositories.Interfaces;
-using person_wpf_demo.Model;
+using person_wpf_demo.Models;
 using person_wpf_demo.Services;
 using System;
 

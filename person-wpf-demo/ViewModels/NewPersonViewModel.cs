@@ -1,42 +1,56 @@
 ﻿using System.Windows.Input;
-using person_wpf_demo.Model;
+using person_wpf_demo.Models;
 using person_wpf_demo.Services.Interfaces;
 using person_wpf_demo.Utils;
 using person_wpf_demo.Utils.Commands;
 
-namespace person_wpf_demo.ViewModel
+namespace person_wpf_demo.ViewModels
 {
-    class NewPersonViewModel : BaseViewModel
+    public class NewPersonViewModel : BaseViewModel
     {
         private readonly IPersonService _personService;
         private readonly INavigationService _navigationService;
 
-        private string _prenom;
-        public string Prenom
+        private string _firstName;
+        public string FirstName
         {
-            get => _prenom;
+            get => _firstName;
             set
             {
-                if (_prenom != value)
+                if (_firstName != value)
                 {
-                    _prenom = value;
-                    OnPropertyChanged(nameof(Prenom));
-                    ValidateProperty(nameof(Prenom), value);
+                    _firstName = value;
+                    OnPropertyChanged(nameof(FirstName));
+                    ValidateProperty(nameof(FirstName), value);
                 }
             }
         }
 
-        private string _nom;
-        public string Nom
+        private string _lastName;
+        public string LastName
         {
-            get => _nom;
+            get => _lastName;
             set
             {
-                if (_nom != value)
+                if (_lastName != value)
                 {
-                    _nom = value;
-                    OnPropertyChanged(nameof(Nom));
-                    ValidateProperty(nameof(Nom), value);
+                    _lastName = value;
+                    OnPropertyChanged(nameof(LastName));
+                    ValidateProperty(nameof(LastName), value);
+                }
+            }
+        }
+
+        private DateTime? _dateOfBirth;
+        public DateTime? DateOfBirth
+        {
+            get => _dateOfBirth;
+            set
+            {
+                if (_dateOfBirth != value)
+                {
+                    _dateOfBirth = value;
+                    OnPropertyChanged(nameof(DateOfBirth));
                 }
             }
         }
@@ -98,8 +112,9 @@ namespace person_wpf_demo.ViewModel
         {
             Person person = new Person()
             {
-                Prenom = Prenom,
-                Nom = Nom,
+                Prenom = FirstName,
+                Nom = LastName,
+                DateDeNaissance = DateOfBirth ?? DateTime.MinValue,
                 Addresses = new List<Address>
                 {
                     new Address()
@@ -115,7 +130,7 @@ namespace person_wpf_demo.ViewModel
         }
         private bool CanSave()
         {
-            bool allRequiredFieldsAreEntered = Prenom.NotEmpty() && Nom.NotEmpty() && Street.NotEmpty() && City.NotEmpty() && PostalCode.NotEmpty();
+            bool allRequiredFieldsAreEntered = FirstName.NotEmpty() && LastName.NotEmpty() && Street.NotEmpty() && City.NotEmpty() && PostalCode.NotEmpty();
 
             return !HasErrors && allRequiredFieldsAreEntered;
         }
@@ -125,7 +140,7 @@ namespace person_wpf_demo.ViewModel
             ClearErrors(propertyName);
             switch (propertyName)
             {
-                case nameof(Prenom):
+                case nameof(FirstName):
                     if (value.Empty())
                     {
                         AddError(propertyName, "Le prénom est requis.");
@@ -135,7 +150,7 @@ namespace person_wpf_demo.ViewModel
                         AddError(propertyName, "Le prénom doit contenir au moins 2 caractères.");
                     }
                     break;
-                case nameof(Nom):
+                case nameof(LastName):
                     if (value.Empty())
                     {
                         AddError(propertyName, "Le nom est requis.");

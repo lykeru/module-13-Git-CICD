@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using person_wpf_demo.Data.Repositories.Interfaces;
-using person_wpf_demo.Model;
+using person_wpf_demo.Models;
 
 namespace person_wpf_demo.Data.Repositories
 {

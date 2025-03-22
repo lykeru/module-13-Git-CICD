@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using person_wpf_demo.Services.Interfaces;
 using person_wpf_demo.Utils;
-using person_wpf_demo.ViewModel;
+using person_wpf_demo.ViewModels;
 
 namespace person_wpf_demo.Services
 {

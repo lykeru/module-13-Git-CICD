@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using person_wpf_demo.Data.Repositories.Interfaces;
-using person_wpf_demo.Model;
+using person_wpf_demo.Models;
 using person_wpf_demo.Services.Interfaces;
 
 namespace person_wpf_demo.Services

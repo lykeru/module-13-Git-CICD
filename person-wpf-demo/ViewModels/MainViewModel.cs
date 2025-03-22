@@ -1,14 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using person_wpf_demo.Model;
+using person_wpf_demo.Models;
 using person_wpf_demo.Data.Repositories;
 using person_wpf_demo.Utils;
 using person_wpf_demo.Utils.Commands;
 using person_wpf_demo.Services.Interfaces;
 
 
-namespace person_wpf_demo.ViewModel
+namespace person_wpf_demo.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {

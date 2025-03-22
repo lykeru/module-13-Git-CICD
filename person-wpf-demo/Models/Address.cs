@@ -1,4 +1,4 @@
-﻿namespace person_wpf_demo.Model
+﻿namespace person_wpf_demo.Models
 {
     public class Address
     {

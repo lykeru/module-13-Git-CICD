@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using person_wpf_demo.Model;
+using person_wpf_demo.Models;
 
 namespace person_wpf_demo.Services.Interfaces
 {
