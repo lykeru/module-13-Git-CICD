@@ -13,6 +13,8 @@ namespace person_wpf_demo.ViewModels
         private readonly IPersonService _personService;
         private readonly INavigationService _navigationService;
 
+        private readonly Dictionary<string, Action<object, string>> _propertyValidators;
+
         private string _firstName;
         public string FirstName
         {
@@ -108,6 +110,16 @@ namespace person_wpf_demo.ViewModels
             _personService = personService;
             _navigationService = navigationService;
             SaveCommand = new RelayCommand(Save, CanSave);
+
+            _propertyValidators = new Dictionary<string, Action<object, string>>
+            {
+                { nameof(FirstName), (value, propertyName) => ValidateFirstName(value as string, propertyName) },
+                { nameof(LastName), (value, propertyName) => ValidateLastName(value as string, propertyName) },
+                { nameof(DateOfBirth), (value, propertyName) => ValidateDateOfBirth(value as DateTime?, propertyName) },
+                { nameof(Street), (value, propertyName) => ValidateStreet(value as string, propertyName) },
+                { nameof(City), (value, propertyName) => ValidateCity(value as string, propertyName) },
+                { nameof(PostalCode), (value, propertyName) => ValidatePostalCode(value as string, propertyName) }
+            };
         }
 
         public ICommand SaveCommand { get; set; }
@@ -141,110 +153,87 @@ namespace person_wpf_demo.ViewModels
 
         private bool CanSave()
         {
-            return (!HasErrors && 
-                FirstName.NotEmpty() && 
+            return !HasErrors && AreRequiredFieldsFilled();
+        }
+
+        private bool AreRequiredFieldsFilled()
+        {
+            return FirstName.NotEmpty() && 
                 LastName.NotEmpty() && 
                 DateOfBirth.HasValue && 
-                Street.NotEmpty() && 
-                City.NotEmpty() && 
-                PostalCode.NotEmpty());
+                Street.NotEmpty() 
+                && City.NotEmpty() && 
+                PostalCode.NotEmpty();
         }
 
         private void ValidateProperty(string propertyName, object value)
         {
             ClearErrors(propertyName);
-            switch (propertyName)
+            if (_propertyValidators.TryGetValue(propertyName, out var validator))
             {
-                case nameof(FirstName):
-                    var firstName = value as string;
-                    if (firstName == null)
-                    {
-                        AddUnknownError(propertyName);
-                    }
-                    else
-                    {
-                        if (firstName.Empty())
-                        {
-                            AddError(propertyName, "Le prénom est requis.");
-                        }
-                        else if (firstName.Length < 2)
-                        {
-                            AddError(propertyName, "Le prénom doit contenir au moins 2 caractères.");
-                        }
-                    }
-                    break;
-                case nameof(LastName):
-                    var lastName = value as string;
-                    if (lastName == null)
-                    {
-                        AddUnknownError(propertyName);
-                    }
-                    else
-                    {
-                        if (lastName.Empty())
-                        {
-                            AddError(propertyName, "Le nom est requis.");
-                        }
-                        else if (lastName.Length < 2)
-                        {
-                            AddError(propertyName, "Le nom doit contenir au moins 2 caractères.");
-                        }
-                    }
-                    break;
-                case nameof(DateOfBirth):
-                    var dateOfBirth = value as DateTime?;
-                    if (dateOfBirth == null || dateOfBirth == DateTime.MinValue)
-                    {
-                        AddError(propertyName, "La date de naissance est requise.");
-                    }
-                    break;
-                case nameof(Street):
-                    var street = value as string;
-                    if (street == null)
-                    {
-                        AddUnknownError(propertyName);
-                    }
-                    else
-                    {
-                        if (street.Empty())
-                        {
-                            AddError(propertyName, "La rue est requise.");
-                        }
-                    }
-                    break;
-                case nameof(City):
-                    var city = value as string;
-                    if (city == null)
-                    {
-                        AddUnknownError(propertyName);
-                    }
-                    else
-                    {
-                        if (city.Empty())
-                        {
-                            AddError(propertyName, "La ville est requise.");
-                        }
-                    }
-                    break;
-                case nameof(PostalCode):
-                    var postalCode = value as string;
-                    if (postalCode == null)
-                    {
-                        AddUnknownError(propertyName);
-                    }
-                    else
-                    {
-                        if (postalCode.Empty())
-                        {
-                            AddError(propertyName, "Le code postal est requis.");
-                        }
-                    }
-                    break;
-                default:
-                    AddUnknownError(propertyName);
-                    break;
+                validator(value, propertyName);
+            }
+            else
+            {
+                AddUnknownError(propertyName);
             }
             OnPropertyChanged(nameof(ErrorMessages));
+        }
+
+        private void ValidateFirstName(string firstName, string propertyName)
+        {
+            if (firstName.Empty())
+            {
+                AddError(propertyName, "Le prénom est requis.");
+            }
+            else if (firstName.Length < 2)
+            {
+                AddError(propertyName, "Le prénom doit contenir au moins 2 caractères.");
+            }
+        }
+
+        private void ValidateLastName(string lastName, string propertyName)
+        {
+            if (lastName.Empty())
+            {
+                AddError(propertyName, "Le nom est requis.");
+            }
+            else if (lastName.Length < 2)
+            {
+                AddError(propertyName, "Le nom doit contenir au moins 2 caractères.");
+            }
+        }
+
+        private void ValidateDateOfBirth(DateTime? dateOfBirth, string propertyName)
+        {
+            if (dateOfBirth == DateTime.MinValue)
+            {
+                AddError(propertyName, "La date de naissance est requise.");
+            }
+        }
+
+        private void ValidateStreet(string street, string propertyName)
+        {
+            if (street.Empty())
+            {
+                AddError(propertyName, "La rue est requise.");
+            }
+        }
+
+        private void ValidateCity(string city, string propertyName)
+        {
+            if (city.Empty())
+            {
+                AddError(propertyName, "La ville est requise.");
+            }
+        }
+
+        private void ValidatePostalCode(string postalCode, string propertyName)
+        {
+            if (postalCode.Empty())
+            {
+                AddError(propertyName, "Le code postal est requis.");
+            }
         }
 
         private void AddUnknownError(string propertyName)
@@ -253,3 +242,6 @@ namespace person_wpf_demo.ViewModels
         }
     }
 }
+
+
+
