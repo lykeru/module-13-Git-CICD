@@ -22,7 +22,7 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void SaveCommand_ValidPerson_ShouldCallAdd()
+        public void Saving_a_valid_person_calls_add()
         {
             _viewModel.FirstName = "Santa";
             _viewModel.LastName = "Claus";
@@ -37,7 +37,7 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void SaveCommand_InvalidFirstName_ShouldNotCallAdd()
+        public void Saving_a_person_with_invalid_first_name_does_not_call_add()
         {
             _viewModel.FirstName = "J";
             _viewModel.LastName = "Doe";
@@ -52,7 +52,7 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void SaveCommand_InvalidLastName_ShouldNotCallAdd()
+        public void Saving_a_person_with_invalid_last_name_does_not_call_add()
         {
             _viewModel.FirstName = "John";
             _viewModel.LastName = "D";
@@ -67,7 +67,7 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void SaveCommand_InvalidDateOfBirth_ShouldNotCallAdd()
+        public void Saving_a_person_with_invalid_date_of_birth_does_not_call_add()
         {
             _viewModel.FirstName = "John";
             _viewModel.LastName = "Doe";
@@ -82,7 +82,7 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void SaveCommand_InvalidStreet_ShouldNotCallAdd()
+        public void Saving_a_person_with_invalid_street_does_not_call_add()
         {
             _viewModel.FirstName = "John";
             _viewModel.LastName = "Doe";
@@ -97,7 +97,7 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void SaveCommand_InvalidCity_ShouldNotCallAdd()
+        public void Saving_a_person_with_invalid_city_does_not_call_add()
         {
             _viewModel.FirstName = "John";
             _viewModel.LastName = "Doe";
@@ -112,7 +112,7 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void SaveCommand_InvalidPostalCode_ShouldNotCallAdd()
+        public void Saving_a_person_with_invalid_postal_code_does_not_call_add()
         {
             _viewModel.FirstName = "John";
             _viewModel.LastName = "Doe";
@@ -127,5 +127,7 @@ namespace person_wpf_demo_tests
         }
     }
 }
+
+
 
 

@@ -30,23 +30,23 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void Save_ValidPerson_ShouldAddPerson()
+        public void Saving_a_valid_person_adds_person_to_database()
         {
-            var person = new Person { Prenom = "John", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) };
+            var person = new Person { Firstname = "John", Lastname = "Doe", DateOfBirth = new DateTime(1990, 1, 1) };
 
             _repository.Save(person);
 
-            var savedPerson = _dbContext.Persons.FirstOrDefault(p => p.Prenom == "John" && p.Nom == "Doe");
+            var savedPerson = _dbContext.Persons.FirstOrDefault(p => p.Firstname == "John" && p.Lastname == "Doe");
             Assert.That(savedPerson, Is.Not.Null);
         }
 
         [Test]
-        public void GetAll_ShouldReturnAllPersons()
+        public void Getting_all_persons_returns_all_persons_from_database()
         {
             var persons = new List<Person>
             {
-                new Person { Prenom = "John", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) },
-                new Person { Prenom = "Jane", Nom = "Doe", DateDeNaissance = new DateTime(1992, 2, 2) }
+                new Person { Firstname = "John", Lastname = "Doe", DateOfBirth = new DateTime(1990, 1, 1) },
+                new Person { Firstname = "Jane", Lastname = "Doe", DateOfBirth = new DateTime(1992, 2, 2) }
             };
             _dbContext.Persons.AddRange(persons);
             _dbContext.SaveChanges();
@@ -54,29 +54,29 @@ namespace person_wpf_demo_tests
             var result = _repository.GetAll();
 
             Assert.That(result.Count, Is.EqualTo(2));
-            Assert.That(result[0].Prenom, Is.EqualTo("John"));
-            Assert.That(result[1].Prenom, Is.EqualTo("Jane"));
+            Assert.That(result[0].Firstname, Is.EqualTo("John"));
+            Assert.That(result[1].Firstname, Is.EqualTo("Jane"));
         }
 
         [Test]
-        public void Update_ValidPerson_ShouldUpdatePerson()
+        public void Updating_a_valid_person_updates_person_in_database()
         {
-            var person = new Person { Prenom = "John", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) };
+            var person = new Person { Firstname = "John", Lastname = "Doe", DateOfBirth = new DateTime(1990, 1, 1) };
             _repository.Save(person);
             _dbContext.SaveChanges();
 
-            person.Prenom = "Johnny";
+            person.Firstname = "Johnny";
             _repository.Update(person);
             _dbContext.SaveChanges();
 
             var updatedPerson = _dbContext.Persons.FirstOrDefault(p => p.Id == person.Id);
-            Assert.That(updatedPerson.Prenom, Is.EqualTo("Johnny"));
+            Assert.That(updatedPerson.Firstname, Is.EqualTo("Johnny"));
         }
 
         [Test]
-        public void Delete_ValidPerson_ShouldRemovePerson()
+        public void Deleting_a_valid_person_removes_person_from_database()
         {
-            var person = new Person { Prenom = "John", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) };
+            var person = new Person { Firstname = "John", Lastname = "Doe", DateOfBirth = new DateTime(1990, 1, 1) };
             _repository.Save(person);
             _dbContext.SaveChanges();
 
@@ -88,5 +88,7 @@ namespace person_wpf_demo_tests
         }
     }
 }
+
+
 
 

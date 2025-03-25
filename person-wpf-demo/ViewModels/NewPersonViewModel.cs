@@ -133,9 +133,9 @@ namespace person_wpf_demo.ViewModels
 
             var person = new Person
             {
-                Prenom = FirstName,
-                Nom = LastName,
-                DateDeNaissance = DateOfBirth ?? DateTime.MinValue,
+                Firstname = FirstName,
+                Lastname = LastName,
+                DateOfBirth = DateOfBirth ?? DateTime.MinValue,
                 Addresses = new List<Address>
                 {
                     new Address

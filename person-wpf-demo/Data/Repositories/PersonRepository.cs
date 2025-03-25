@@ -32,8 +32,8 @@ namespace person_wpf_demo.Data.Repositories
             var existingPerson = _context.Persons.Include(p => p.Addresses).FirstOrDefault(p => p.Id == person.Id);
             if (existingPerson != null)
             {
-                existingPerson.Prenom = person.Prenom;
-                existingPerson.Nom = person.Nom;
+                existingPerson.Firstname = person.Firstname;
+                existingPerson.Lastname = person.Lastname;
 
                 foreach (var address in person.Addresses)
                 {

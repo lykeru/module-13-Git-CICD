@@ -12,8 +12,8 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="5">
-                            <TextBlock Text="{Binding Path=Prenom}"/>
-                            <TextBlock Text="{Binding Path=Nom}"/>
+                            <TextBlock Text="{Binding Path=Firstname}"/>
+                            <TextBlock Text="{Binding Path=Lastname}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

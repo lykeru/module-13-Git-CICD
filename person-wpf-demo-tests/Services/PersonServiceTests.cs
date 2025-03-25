@@ -4,6 +4,8 @@ using person_wpf_demo.Data.Repositories.Interfaces;
 using person_wpf_demo.Models;
 using person_wpf_demo.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace person_wpf_demo_tests
 {
@@ -20,9 +22,9 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void Add_ValidPerson_ShouldCallSave()
+        public void Adding_a_valid_person_calls_save()
         {
-            var person = new Person { Prenom = "John", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) };
+            var person = new Person { Firstname = "John", Lastname = "Doe", DateOfBirth = new DateTime(1990, 1, 1) };
 
             _personService.Add(person);
 
@@ -30,23 +32,23 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void Add_InvalidPrenom_ShouldThrowArgumentException()
+        public void Adding_a_person_with_invalid_firstname_throws_exception()
         {
-            var person = new Person { Prenom = "J", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) };
+            var person = new Person { Firstname = "J", Lastname = "Doe", DateOfBirth = new DateTime(1990, 1, 1) };
 
             Assert.That(() => _personService.Add(person), Throws.ArgumentException);
         }
 
         [Test]
-        public void Add_InvalidNom_ShouldThrowArgumentException()
+        public void Adding_a_person_with_invalid_lastname_throws_exception()
         {
-            var person = new Person { Prenom = "John", Nom = "D", DateDeNaissance = new DateTime(1990, 1, 1) };
+            var person = new Person { Firstname = "John", Lastname = "D", DateOfBirth = new DateTime(1990, 1, 1) };
 
             Assert.That(() => _personService.Add(person), Throws.ArgumentException);
         }
 
         [Test]
-        public void CalculateAge_ValidDate_ShouldReturnCorrectAge()
+        public void Calculating_age_returns_correct_age()
         {
             var birthDate = new DateTime(1990, 1, 1);
             var expectedAge = DateTime.Today.Year - birthDate.Year;
@@ -58,26 +60,26 @@ namespace person_wpf_demo_tests
         }
 
         [Test]
-        public void FindAll_ShouldReturnAllPersons()
+        public void Finding_all_persons_returns_all_persons()
         {
             var persons = new List<Person>
             {
-                new Person { Prenom = "John", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) },
-                new Person { Prenom = "Jane", Nom = "Doe", DateDeNaissance = new DateTime(1992, 2, 2) }
+                new Person { Firstname = "John", Lastname = "Doe", DateOfBirth = new DateTime(1990, 1, 1) },
+                new Person { Firstname = "Jane", Lastname = "Doe", DateOfBirth = new DateTime(1992, 2, 2) }
             };
             _personRepositoryMock.Setup(repo => repo.GetAll()).Returns(persons);
 
             var result = _personService.FindAll();
 
             Assert.That(result.Count(), Is.EqualTo(2));
-            Assert.That(result.First().Prenom, Is.EqualTo("John"));
-            Assert.That(result.Last().Prenom, Is.EqualTo("Jane"));
+            Assert.That(result.First().Firstname, Is.EqualTo("John"));
+            Assert.That(result.Last().Firstname, Is.EqualTo("Jane"));
         }
 
         [Test]
-        public void Remove_ValidPerson_ShouldCallDelete()
+        public void Removing_a_valid_person_calls_delete()
         {
-            var person = new Person { Prenom = "John", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) };
+            var person = new Person { Firstname = "John", Lastname = "Doe", DateOfBirth = new DateTime(1990, 1, 1) };
 
             _personService.Remove(person);
 
@@ -85,4 +87,6 @@ namespace person_wpf_demo_tests
         }
     }
 }
+
+
 
