@@ -24,9 +24,12 @@ namespace person_wpf_demo_tests
         [Test]
         public void SaveCommand_ValidPerson_ShouldCallAdd()
         {
-            _viewModel.FirstName = "John";
-            _viewModel.LastName = "Doe";
-            _viewModel.DateOfBirth = new DateTime(1990, 1, 1);
+            _viewModel.FirstName = "Santa";
+            _viewModel.LastName = "Claus";
+            _viewModel.DateOfBirth = new DateTime(1690, 1, 1);
+            _viewModel.Street = "Candy Lane";
+            _viewModel.City = "North Pole";
+            _viewModel.PostalCode = "HOHOHO";
 
             _viewModel.SaveCommand.Execute(null);
 

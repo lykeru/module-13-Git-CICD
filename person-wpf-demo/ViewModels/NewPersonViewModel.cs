@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 using person_wpf_demo.Models;
 using person_wpf_demo.Services.Interfaces;
 using person_wpf_demo.Utils;
@@ -51,6 +53,7 @@ namespace person_wpf_demo.ViewModels
                 {
                     _dateOfBirth = value;
                     OnPropertyChanged(nameof(DateOfBirth));
+                    ValidateProperty(nameof(DateOfBirth), value);
                 }
             }
         }
@@ -108,16 +111,22 @@ namespace person_wpf_demo.ViewModels
         }
 
         public ICommand SaveCommand { get; set; }
+
         private void Save()
         {
-            Person person = new Person()
+            if (!CanSave())
+            {
+                return;
+            }
+
+            var person = new Person
             {
                 Prenom = FirstName,
                 Nom = LastName,
                 DateDeNaissance = DateOfBirth ?? DateTime.MinValue,
                 Addresses = new List<Address>
                 {
-                    new Address()
+                    new Address
                     {
                         Street = Street,
                         City = City,
@@ -125,61 +134,122 @@ namespace person_wpf_demo.ViewModels
                     }
                 }
             };
+
             _personService.Add(person);
             _navigationService.NavigateTo<PersonsViewModel>();
         }
+
         private bool CanSave()
         {
-            bool allRequiredFieldsAreEntered = FirstName.NotEmpty() && LastName.NotEmpty() && Street.NotEmpty() && City.NotEmpty() && PostalCode.NotEmpty();
-
-            return !HasErrors && allRequiredFieldsAreEntered;
+            return (!HasErrors && 
+                FirstName.NotEmpty() && 
+                LastName.NotEmpty() && 
+                DateOfBirth.HasValue && 
+                Street.NotEmpty() && 
+                City.NotEmpty() && 
+                PostalCode.NotEmpty());
         }
 
-        private void ValidateProperty(string propertyName, string value)
+        private void ValidateProperty(string propertyName, object value)
         {
             ClearErrors(propertyName);
             switch (propertyName)
             {
                 case nameof(FirstName):
-                    if (value.Empty())
+                    var firstName = value as string;
+                    if (firstName == null)
                     {
-                        AddError(propertyName, "Le prénom est requis.");
+                        AddUnknownError(propertyName);
                     }
-                    else if (value.Length < 2)
+                    else
                     {
-                        AddError(propertyName, "Le prénom doit contenir au moins 2 caractères.");
+                        if (firstName.Empty())
+                        {
+                            AddError(propertyName, "Le prénom est requis.");
+                        }
+                        else if (firstName.Length < 2)
+                        {
+                            AddError(propertyName, "Le prénom doit contenir au moins 2 caractères.");
+                        }
                     }
                     break;
                 case nameof(LastName):
-                    if (value.Empty())
+                    var lastName = value as string;
+                    if (lastName == null)
                     {
-                        AddError(propertyName, "Le nom est requis.");
+                        AddUnknownError(propertyName);
                     }
-                    else if (value.Length < 2)
+                    else
                     {
-                        AddError(propertyName, "Le nom doit contenir au moins 2 caractères.");
+                        if (lastName.Empty())
+                        {
+                            AddError(propertyName, "Le nom est requis.");
+                        }
+                        else if (lastName.Length < 2)
+                        {
+                            AddError(propertyName, "Le nom doit contenir au moins 2 caractères.");
+                        }
+                    }
+                    break;
+                case nameof(DateOfBirth):
+                    var dateOfBirth = value as DateTime?;
+                    if (dateOfBirth == null || dateOfBirth == DateTime.MinValue)
+                    {
+                        AddError(propertyName, "La date de naissance est requise.");
                     }
                     break;
                 case nameof(Street):
-                    if (value.Empty())
+                    var street = value as string;
+                    if (street == null)
                     {
-                        AddError(propertyName, "La rue est requise.");
+                        AddUnknownError(propertyName);
+                    }
+                    else
+                    {
+                        if (street.Empty())
+                        {
+                            AddError(propertyName, "La rue est requise.");
+                        }
                     }
                     break;
                 case nameof(City):
-                    if (value.Empty())
+                    var city = value as string;
+                    if (city == null)
                     {
-                        AddError(propertyName, "La ville est requise.");
+                        AddUnknownError(propertyName);
+                    }
+                    else
+                    {
+                        if (city.Empty())
+                        {
+                            AddError(propertyName, "La ville est requise.");
+                        }
                     }
                     break;
                 case nameof(PostalCode):
-                    if (value.Empty())
+                    var postalCode = value as string;
+                    if (postalCode == null)
                     {
-                        AddError(propertyName, "Le code postal est requis.");
+                        AddUnknownError(propertyName);
                     }
+                    else
+                    {
+                        if (postalCode.Empty())
+                        {
+                            AddError(propertyName, "Le code postal est requis.");
+                        }
+                    }
+                    break;
+                default:
+                    AddUnknownError(propertyName);
                     break;
             }
             OnPropertyChanged(nameof(ErrorMessages));
+        }
+
+        private void AddUnknownError(string propertyName)
+        {
+            AddError(propertyName, "Une erreur inconnue est survenue.");
         }
     }
 }
