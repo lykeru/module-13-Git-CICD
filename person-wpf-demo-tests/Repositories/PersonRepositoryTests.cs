@@ -57,5 +57,36 @@ namespace person_wpf_demo_tests
             Assert.That(result[0].Prenom, Is.EqualTo("John"));
             Assert.That(result[1].Prenom, Is.EqualTo("Jane"));
         }
+
+        [Test]
+        public void Update_ValidPerson_ShouldUpdatePerson()
+        {
+            var person = new Person { Prenom = "John", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) };
+            _repository.Save(person);
+            _dbContext.SaveChanges();
+
+            person.Prenom = "Johnny";
+            _repository.Update(person);
+            _dbContext.SaveChanges();
+
+            var updatedPerson = _dbContext.Persons.FirstOrDefault(p => p.Id == person.Id);
+            Assert.That(updatedPerson.Prenom, Is.EqualTo("Johnny"));
+        }
+
+        [Test]
+        public void Delete_ValidPerson_ShouldRemovePerson()
+        {
+            var person = new Person { Prenom = "John", Nom = "Doe", DateDeNaissance = new DateTime(1990, 1, 1) };
+            _repository.Save(person);
+            _dbContext.SaveChanges();
+
+            _repository.Delete(person);
+            _dbContext.SaveChanges();
+
+            var deletedPerson = _dbContext.Persons.FirstOrDefault(p => p.Id == person.Id);
+            Assert.That(deletedPerson, Is.Null);
+        }
     }
 }
+
+
