@@ -36,7 +36,8 @@ namespace person_wpf_demo_tests
 
             _repository.Save(person);
 
-            var savedPerson = _dbContext.Persons.FirstOrDefault(p => p.Firstname == "John" && p.Lastname == "Doe");
+            var savedPerson = _dbContext.Persons.FirstOrDefault(
+                p => p.Firstname == "John" && p.Lastname == "Doe");
             Assert.That(savedPerson, Is.Not.Null);
         }
 
@@ -77,7 +78,7 @@ namespace person_wpf_demo_tests
         public void Deleting_a_valid_person_removes_person_from_database()
         {
             var person = new Person { Firstname = "John", Lastname = "Doe", DateOfBirth = new DateTime(1990, 1, 1) };
-            _repository.Save(person);
+            _dbContext.Persons.Add(person);
             _dbContext.SaveChanges();
 
             _repository.Delete(person);
