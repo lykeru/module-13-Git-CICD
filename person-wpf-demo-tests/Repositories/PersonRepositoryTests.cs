@@ -20,12 +20,14 @@ namespace person_wpf_demo_tests
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
             _dbContext = new ApplicationDbContext(options);
+            _dbContext.Database.EnsureCreated();
             _repository = new PersonRepository(_dbContext);
         }
 
         [TearDown]
         public void TearDown()
         {
+            _dbContext.Database.EnsureDeleted();
             _dbContext.Dispose();
         }
 
