@@ -1,0 +1,53 @@
+name: Déploiement en continu
+
+on:
+    push:
+      tags:
+      - 'PersonApp-V*'
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - run: dotnet restore person-wpf-demo.sln
+      - run: dotnet build person-wpf-demo.sln --no-restore --configuration Release
+      - run: dotnet test person-wpf-demo-tests/person-wpf-demo-tests.csproj --verbosity normal
+
+  publish:
+    runs-on: windows-latest
+    needs: test #Revalide que les tests passent pour déployer
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Publish WPF app
+      run: >
+        dotnet publish person-wpf-demo/person-wpf-demo.csproj
+        --configuration Release
+        --runtime win-x64
+        --self-contained true
+        --output publish
+
+    - name: Generate installer with Inno Setup
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+      with:
+        path: installer/setup.iss
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        name: Release ${{ github.ref_name }}
+        tag_name: ${{ github.ref_name }}
+        files: installer/setup.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
