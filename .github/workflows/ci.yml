@@ -27,7 +27,7 @@ jobs:
       run: dotnet build person-wpf-demo.sln --no-restore --configuration Release
 
     - name: Run tests
-      run: dotnet test person-wpf-tests\person-wpf-tests.csproj --verbosity normal --logger trx --results-directory TestResults
+      run: dotnet test person-wpf-demo-tests\person-wpf-demo-tests.csproj --verbosity normal --logger trx --results-directory TestResults
       
     - name: Upload test results
       uses: actions/upload-artifact@v4
